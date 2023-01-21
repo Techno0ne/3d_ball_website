@@ -49,6 +49,7 @@ for (let i = 0; i < 36; i++) {
     ball.add(dot);
     dots.push(dot);
 }
+
 // Animate function
 function animate() {
     requestAnimationFrame( animate );
@@ -57,8 +58,11 @@ function animate() {
 
     // Update the position of the dots
     for (let i = 0; i < dots.length; i++) {
-        dots[i].position.x = Math.sin(i * 10 * Math.PI / 180 + Date.now() * 0.001) * 1;
-        dots[i].position.y = Math.cos(i * 10 * Math.PI / 180 + Date.now() * 0.001) * 1;
+        dots[i].position.x = ball.position.x + Math.sin(i * 10 * Math.PI / 180 + Date.now() * 0.001) * 1.2;
+        dots[i].position.y = ball.position.y + Math.cos(i * 10 * Math.PI / 180 + Date.now() * 0.001) * 1.2;
+        dots[i].position.z = ball.position.z - 0;
+        dots[i].scale.set(1.5, 1.5, 1.5);
+        dots[i].lookAt(ball.position);
     }
 
     renderer.render( scene, camera );
