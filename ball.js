@@ -6,10 +6,27 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 
 // Create a renderer
 const renderer = new THREE.WebGLRenderer();
+
+//change size of the renderer
 renderer.setSize( window.innerWidth, window.innerHeight );
 
 // Add the renderer's output to the HTML element that will hold the 3D ball
 document.getElementById("ball-container").appendChild( renderer.domElement );
+
+// Create a texture for the background
+const textureLoader = new THREE.TextureLoader();
+textureLoader.load('https://picsum.photos/200/300', function (texture) {
+    // Create a plane for the background
+    const planeGeometry = new THREE.PlaneGeometry(6, 6, 0);
+    const planeMaterial = new THREE.MeshBasicMaterial({ map: texture });
+    const backgroundPlane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+    // Set the position of the plane
+    backgroundPlane.position.z = -1;
+
+    // Add the background plane to the scene
+    scene.add(backgroundPlane);
+});
 
 // Create a geometry for the ball
 const geometry = new THREE.SphereGeometry(1, 32, 32);
@@ -31,6 +48,9 @@ scene.add(light);
 // Add the ball to the scene
 scene.add(ball);
 
+// Add the background plane to the scene
+//scene.add(backgroundPlane);
+
 // Create a small sphere geometry
 const dotGeometry = new THREE.SphereGeometry(0.1, 32, 32);
 
@@ -49,6 +69,9 @@ for (let i = 0; i < 36; i++) {
     ball.add(dot);
     dots.push(dot);
 }
+
+// This will ensure that the animation starts only after the page has fully loaded, which should give the browser enough time to set up the canvas correctly.
+window.onload = function() {
 
 // Animate function
 function animate() {
@@ -70,3 +93,4 @@ function animate() {
 
 // animate the ball
 animate();
+}
