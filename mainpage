@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>3D Ball Website</title>
+  </head>
+  <body>
+    <div id="ball-container"></div>
+  </body>
+</html>
