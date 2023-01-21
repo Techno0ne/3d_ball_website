@@ -20,9 +20,6 @@ const material = new THREE.MeshPhongMaterial( {color: 0xffff00, shininess: 100} 
 // Create the ball
 const ball = new THREE.Mesh( geometry, material );
 
-// Add the ball to the scene
-scene.add(ball);
-
 // Position the camera
 camera.position.z = 5;
 
@@ -31,32 +28,41 @@ const light = new THREE.PointLight(0xFFFFFF);
 light.position.set(10, 10, 10);
 scene.add(light);
 
-// Create a red strip material
-const stripMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
+// Add the ball to the scene
+scene.add(ball);
 
-// Create the strips
-const stripGeometry = new THREE.BoxGeometry(0.1, 1, 1);
-const strips = [];
+// Create a small sphere geometry
+const dotGeometry = new THREE.SphereGeometry(0.1, 32, 32);
 
+// Create a red material for the dots
+const dotMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
+
+// Create an array to store the dots
+const dots = [];
+
+// Create the dots
 for (let i = 0; i < 36; i++) {
-    const strip = new THREE.Mesh(stripGeometry, stripMaterial);
-    strip.position.x = Math.sin(i * 10 * Math.PI / 180) * 0.8;
-    strip.position.y = Math.cos(i * 10 * Math.PI / 180) * 0.8;
-    strip.position.z = 0;
-    strip.rotation.z = i * 10 * Math.PI / 180;
-    strip.updateMatrix();
-    geometry.merge(strip.geometry, strip.matrix);
-    strips.push(strip);
+    const dot = new THREE.Mesh(dotGeometry, dotMaterial);
+    dot.position.x = Math.sin(i * 10 * Math.PI / 180) * 1;
+    dot.position.y = Math.cos(i * 10 * Math.PI / 180) * 1;
+    dot.position.z = 1;
+    ball.add(dot);
+    dots.push(dot);
 }
-
-// Update the ball's geometry
-ball.geometry = geometry;
-
 // Animate function
 function animate() {
     requestAnimationFrame( animate );
     ball.rotation.x += 0.01;
     ball.rotation.y += 0.01;
+
+    // Update the position of the dots
+    for (let i = 0; i < dots.length; i++) {
+        dots[i].position.x = Math.sin(i * 10 * Math.PI / 180 + Date.now() * 0.001) * 1;
+        dots[i].position.y = Math.cos(i * 10 * Math.PI / 180 + Date.now() * 0.001) * 1;
+    }
+
     renderer.render( scene, camera );
 }
+
+// animate the ball
 animate();
